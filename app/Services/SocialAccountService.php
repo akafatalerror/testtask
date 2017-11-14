@@ -17,6 +17,11 @@ class SocialAccountService
                             ->first();
 
         if ($account) {
+
+            //update token
+            $account->user->token = $providerUser->token;
+            $account->user->save();
+
             return $account->user;
         } else {
             $account = new UserSocialAccount([

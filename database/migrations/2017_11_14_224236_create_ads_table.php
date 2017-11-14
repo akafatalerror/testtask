@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPhotoColumnUsersTable extends Migration
+class CreateAdsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class AddPhotoColumnUsersTable extends Migration
      */
     public function up()
     {
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('avatar')->nullable();
-            $table->string('token')->nullable();
+        Schema::create('ads', function (Blueprint $table) {
+            $table->increments('id');
+            $table->text('comment');
+            $table->timestamps();
         });
-
     }
 
     /**
@@ -28,8 +27,6 @@ class AddPhotoColumnUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['avatar', 'token']);
-        });
+        Schema::dropIfExists('ads');
     }
 }

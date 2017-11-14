@@ -19,7 +19,7 @@ class SocialController extends Controller
 
         $driver   = Socialite::driver($provider);
 
-        $user = $service->createOrGetUser($driver, $provider);
+        $user = $service->createOrGetUser($driver, $provider);        
         \Auth::login($user, true);
         return redirect()->intended('/cabinet');
 
