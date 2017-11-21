@@ -3,65 +3,34 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Vk;
+use Cache;
 
 class Ad extends Model
 {
 
     protected $table = 'ads';
-    protected $fillable = ['ad_id', 'comment'];
+    protected $fillable = ['vk_id', 'comment'];
 
     public static function fields_info(){
+        return \Config::get('ad.fields_info');
+    }
 
-        return [
-            'id' => 'Идентификатор объявления',
-            'campaign_id' => 'Идентификатор кампании',
+    public static function process_timestamp($value) {
+        return !empty($value)?date('d.m.Y H:i:s', $value):'Не задано';
+    }
 
-            'ad_format' => [
-                'name'   => 'идентификатор кампании',
-                'values' => [
-                        1 => 'изображение и текст',
-                        2 => 'большое изображение',
-                        3 => 'эксклюзивный формат',
-                        4 => 'продвижение сообществ или приложений, квадратное изображение',
-                        5 => 'приложение в новостной ленте (устаревший)',
-                        6 => 'мобильное приложение',
-                        9 => 'запись в сообществе'
-                ]
-            ],
-            'cost_type' => [
-                'name' => 'тип оплаты',
-                'values' => [
-                    0 => 'оплата за переходы;',
-                    1 => 'оплата за показы'
-                ]
-            ],
-            'cpc'  => [
-                'comment' => '(если cost_type = 0) цена за переход в копейках.'
-            ],
-            'cpm' => [
-                'comment' => '(если cost_type = 1) цена за 1000 показов в копейках.'
-            ],
-            'impressions_limit' => 'Ограничение количества показов данного объявления на одного пользователя',
-            'name' => 'Название объявления',
-            'status' => [
-                'name'   => 'Cтатус объявления',
-                'values' => [
-                    0 => 'объявление остановлено',
-                    1 => 'объявление запущено',
-                    2 => 'объявление удалено'
-                ]
-            ],
-            'approved' => [
-                'name'   => 'статус модерации объявления',
-                'values' => [
-                    0 => 'объявление не проходило модерацию',
-                    1 => 'объявление ожидает модерации;',
-                    2 => 'объявление одобрено',
-                    3 => 'объявление отклонено'
-                ]
-            ]
-        ];
 
+    public static function process_limit($value) {
+        return (empty($value)?'Лимит не задан':$value);
+    }
+
+    public static function process_age_restriction($value) {
+        return (empty($value)?'Лимит не задан':$value);
+    }
+
+    public static function process_kopecks($value) {
+        return round($value/100,2).' руб.';
     }
 
 

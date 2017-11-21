@@ -16,12 +16,18 @@
 // });
 
 Route::get('/', 'HomeController@index');
-Route::get('/home/vk', 'HomeController@vk');
-Route::get('/logout', 'HomeController@logout');
+Route::get('/home/vk', 'HomeController@vk')->name('login');
+Route::get('/logout', 'HomeController@logout')->name('logout');
 
 Route::get('/social_login/{provider}', 'SocialController@login');
 Route::get('/social_login/callback/{provider}', 'SocialController@callback');
 
-Route::get('/cabinet', 'CabinetController@index');
-Route::get('/cabinet/{cabinet_id}/{cabinet_name}', 'CabinetController@cabinet');
-Route::get('/campaign/{cabinet_id}/{cabinet_name}/{campaign_id}/{campaign_name}', 'CabinetController@campaign');
+//
+Route::group(array('middleware' => 'auth'), function()
+{
+    Route::get('/cabinet', 'CabinetController@index');
+    Route::get('/cabinet/{cabinet_id}/{cabinet_name}', 'CabinetController@cabinet');
+    Route::get('/campaign/{cabinet_id}/{cabinet_name}/{campaign_id}/{campaign_name}', 'CabinetController@campaign');
+    Route::post('/campaign/delete', 'CabinetController@delete');
+    Route::post('/campaign/comment', 'CabinetController@comment');
+});

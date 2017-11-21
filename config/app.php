@@ -182,6 +182,9 @@ return [
          * Socialite
          */
          \SocialiteProviders\Manager\ServiceProvider::class,
+
+         App\Providers\VkServicePrivider::class,
+
     ],
 
     /*
@@ -231,7 +234,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        //'Vkclient' => Laravel\ATehnix\VkClient\Client::class,
+        'Vk' => App\Facades\VkApiFacade::class,
     ],
 
 ];

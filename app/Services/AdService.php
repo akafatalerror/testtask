@@ -18,9 +18,19 @@ class AdService
             ];
         } else if( isset($field_info[$name]) && is_array($field_info[$name])){
 
+            $field_name = isset($field_info[$name]['name'])?$field_info[$name]['name']:$name;
+
+            if( isset($field_info[$name]['callback']) ){
+                $field_value = Ad::{$field_info[$name]['callback']}($value);
+            } elseif( isset($field_info[$name]['values'][$value]) ) {
+                $field_value = $field_info[$name]['values'][$value];
+            } else {
+                $field_value = $value;
+            }
+
             return[
-                'name'    => isset($field_info[$name]['name'])?$field_info[$name]['name']:$name,
-                'value'   => isset($field_info[$name]['values'][$value])?$field_info[$name]['values'][$value]:$value,
+                'name'    => $field_name,
+                'value'   => $field_value,
                 'comment' => @$field_info[$name]['comment']
             ];
 

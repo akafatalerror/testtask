@@ -4,48 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use ATehnix\VkClient\Client;
+use App\Models\Ad;
 use Auth;
+use Vk;
 
 class CabinetController extends Controller
 {
-    private $vk_client;
-
-    public function __construct(){
-
-        $this->middleware(function ($request, $next) {
-            $this->vk_client = new Client;
-            $this->vk_client->setDefaultToken(Auth::user()->token);
-
-            return $next($request);
-        });
-    }
 
     public function index()
     {
-
-        $list = [];
-
-        try{
-            $cabinets = $this->vk_client->request('ads.getAccounts');
-            $list = @$cabinets['response'];
-        } catch( \ATehnix\VkClient\Exceptions\AccessDeniedVkException  $e) {
-            return view('common.error', ['error' => 'Нет доступа к списку кабиентов пользователя']);
-        }
-
+        $list = Vk::get('ads.getAccounts');
         return view('cabinet.index', ['cabinets' => $list]);
     }
 
     public function cabinet($cabinet_id, $cabinet_name)
     {
-        $list = [];
-
-        try{
-            $result = $this->vk_client->request('ads.getCampaigns',['account_id' => $cabinet_id]);
-            $list = @$result['response'];
-
-        } catch( \ATehnix\VkClient\Exceptions\AccessDeniedVkException  $e) {
-            return view('common.error', ['error' => 'Нет доступа к кабинету пользователя']);
-        }
+        $list = Vk::get('ads.getCampaigns',['account_id' => $cabinet_id]);
 
         return view('cabinet.cabinet', [
             'campaigns'    => $list,
@@ -57,23 +31,42 @@ class CabinetController extends Controller
     public function campaign($cabinet_id, $cabinet_name, $campaign_id, $campaign_name)
     {
 
-        $list = [];
-        
-        try{
-            $result = $this->vk_client->request('ads.getAds',['account_id' => $cabinet_id, 'campaign_ids' => json_encode([$campaign_id])]);
-            $list = @$result['response'];
+        $list     = [];
+        $comments = [];
 
-        } catch( \ATehnix\VkClient\Exceptions\AccessDeniedVkException  $e) {
-            return view('common.error', ['error' => 'Нет доступа к кабинету пользователя']);
-        }
+        $list = Vk::get('ads.getAds',['account_id' => $cabinet_id, 'campaign_ids' => json_encode([$campaign_id])]);
 
         return view('cabinet.campaign', [
             'campaign_id'   => $campaign_id,
             'campaign_name' => $campaign_name,
             'cabinet_id'    => $cabinet_id,
             'cabinet_name'  => urldecode($cabinet_name),
-            'ads'           => $list
+            'ads'           => $list,
+            'comments'      => $comments,
         ]);
+    }
+
+    public function delete(Request $request){
+
+        $res = Vk::get('ads.deleteAds',['account_id' => $request->get('account_id'), 'ids' => json_encode([$request->get('ad_id')])]);
+
+        return response()->json(['ok' => 1]);
+
+    }
+
+
+    public function comment(Request $request){
+
+        $request->validate([
+            'comment' => 'required|max:100',
+            'vk_id'   => 'required',
+        ]);
+
+        $ad = Ad::firstOrNew(['vk_id' => $request->get('vk_id')]);
+        $ad->comment = $request->get('comment');
+        $ad->save();
+
+        return response()->json(['ok' => 1]);
     }
 
 }
