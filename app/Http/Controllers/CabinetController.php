@@ -35,6 +35,13 @@ class CabinetController extends Controller
         $comments = [];
 
         $list = Vk::get('ads.getAds',['account_id' => $cabinet_id, 'campaign_ids' => json_encode([$campaign_id])]);
+        $_ids = [];
+        foreach ($list as $_ad) {
+            $_ids[] = $_ad['id'];
+        }
+        if( !empty($_ids)){
+            $comments = Ad::whereIn('vk_id', $_ids)->get()->pluck('comment','vk_id')->all();
+        }
 
         return view('cabinet.campaign', [
             'campaign_id'   => $campaign_id,

@@ -27,8 +27,9 @@ CREATE TABLE `ads` (
   `comment` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `vk_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -52,7 +53,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +62,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (37,'2014_10_12_000000_create_users_table',1),(38,'2014_10_12_100000_create_password_resets_table',1),(39,'2017_11_14_143707_create_user_social_account_table',1),(40,'2017_11_14_165207_add_photo_column_users_table',1),(41,'2017_11_14_224236_create_ads_table',2);
+INSERT INTO `migrations` VALUES (37,'2014_10_12_000000_create_users_table',1),(38,'2014_10_12_100000_create_password_resets_table',1),(39,'2017_11_14_143707_create_user_social_account_table',1),(40,'2017_11_14_165207_add_photo_column_users_table',1),(41,'2017_11_14_224236_create_ads_table',2),(42,'2017_11_19_212845_create_cabinets_table',3),(43,'2017_11_19_235828_add_vk_id_column',4);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +114,6 @@ CREATE TABLE `user_social_account` (
 
 LOCK TABLES `user_social_account` WRITE;
 /*!40000 ALTER TABLE `user_social_account` DISABLE KEYS */;
-INSERT INTO `user_social_account` VALUES (1,1,'4039592','vkontakte','2017-11-14 18:26:35','2017-11-14 18:26:35');
 /*!40000 ALTER TABLE `user_social_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,7 +145,6 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Рашид Галимов','rashid.galimov@gmail.com','Su96wAcugkU6','d5cUbu810aPyIUSrd68cflS4rVl9Gqgb4fAYcebN7SeeMmiDazrKXOhtKV2m','2017-11-14 18:26:35','2017-11-14 20:28:22','https://pp.userapi.com/c303802/u4039592/e_60eda889.jpg','0804936404016b4d29302e6303bd9d863a2e167a399f7d81fd1233aa09c31b51a83a918579476bd530aea');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -158,4 +157,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-15  2:38:53
+-- Dump completed on 2017-11-21 19:54:43
